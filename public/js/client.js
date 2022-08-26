@@ -117,7 +117,7 @@ fetch("https://yedas-agent.herokuapp.com/api/customers/" + tcInfo, requestOption
             myPeerName = "AD : " + result.fullName + " TC : " + result.tcKimlik + " ARAMA NEDENİ : " + result.typeInfo;
         }
         else {
-            myPeerName = "" + "" + "  " + "" + "  " +"";
+            myPeerName = "AD : " + result.fullName + " TC : " + result.tcKimlik + " ARAMA NEDENİ : " + result.typeInfo;
         }
 
     })
