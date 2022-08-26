@@ -112,8 +112,14 @@ var requestOptions = {
 fetch("https://yedas-agent.herokuapp.com/api/customers/" + tcInfo, requestOptions)
     .then(response => response.json())
     .then(result => {
-        console.log(result)
-        myPeerName = "AD : " + result.fullName + " TC : " + result.tcKimlik + " ARAMA NEDENİ : " + result.typeInfo;
+        if(myPeerName){
+            console.log(result)
+            myPeerName = "AD : " + result.fullName + " TC : " + result.tcKimlik + " ARAMA NEDENİ : " + result.typeInfo;
+        }
+        else {
+            myPeerName = "AD : " + result.fullName + " TC : " + result.tcKimlik + " ARAMA NEDENİ : " + result.typeInfo;
+        }
+        
     })
     .catch(error => console.log('error', error));
 
@@ -773,8 +779,12 @@ async function clientConnet() {
     console.log('11. Bilgi doğrulaması');
     if (true) {
         checkPeerAudioVideo();
+        
         whoAreYouJoin();
+        getPeer();
+
         playSound('addPeer');
+       
         return;
     }
 }
@@ -828,8 +838,7 @@ const getPeer = () => {
 
 
 function whoAreYouJoin() {
-
-    getPeer();
+    
     myVideoWrap.style.display = 'inline';
     myVideoParagraph.innerHTML = `${data.data.name} adlı temsilci`;
     setPeerAvatarImgName('myVideoAvatarImage', myPeerName);
