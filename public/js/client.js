@@ -112,8 +112,8 @@ var requestOptions = {
 fetch("https://yedas-agent.herokuapp.com/api/customers/" + tcInfo, requestOptions)
     .then(response => response.json())
     .then(result => {
-        if (myPeerName) {
-            console.log(result)
+        if (typeof myPeerName !== 'undefined') {
+            console.log(result+'asdf')
             myPeerName = "AD : " + result.fullName + " TC : " + result.tcKimlik + " ARAMA NEDENİ : " + result.typeInfo;
         }
         else {
@@ -981,7 +981,10 @@ async function handlePeersConnectionStatus(peer_id) {
         });
         // vbağlantı kontrolü
         getPeer();
-        myVideoParagraph.innerHTML = `${data.data.name} adlı temsilci`;
+        if(typeof data.data.name !== 'undefined'){
+            myVideoParagraph.innerHTML = `${data.data.name} adlı temsilci`;
+
+        }
 
     };
 }
