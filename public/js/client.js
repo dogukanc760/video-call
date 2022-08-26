@@ -109,6 +109,9 @@ var requestOptions = {
     redirect: 'follow'
 };
 
+
+console.log(tcInfo);
+let dalData;
 fetch("https://yedas-agent.herokuapp.com/api/customers/" + tcInfo, requestOptions)
     .then(response => response.json())
     .then(result => {
@@ -122,7 +125,6 @@ fetch("https://yedas-agent.herokuapp.com/api/customers/" + tcInfo, requestOption
 
     })
     .catch(error => console.log('error', error));
-
 let isScreenEnabled = getScreenEnabled();
 let isScreenSharingSupported = false;
 let isCamMirrored = false;
@@ -781,7 +783,7 @@ async function clientConnet() {
         checkPeerAudioVideo();
 
         whoAreYouJoin();
-        getPeer();
+        //getPeer();
 
         playSound('addPeer');
 
@@ -842,9 +844,27 @@ function whoAreYouJoin() {
     myVideoWrap.style.display = 'inline';
     // data dan gelen bilgileri yazma
     if (typeof data.data.name !== 'undefined') {
-        myVideoParagraph.innerHTML = `${data.data.name} adlı temsilci`;
+        console.log(12312)
 
     }
+    else {
+        var requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+
+        fetch("https://data-storage-server.herokuapp.com/get-info-preview", requestOptions)
+            .then(response => response.text())
+            .then(result => {
+                data = result;
+            })
+            .then(res => {
+                myVideoParagraph.innerHTML = ``;
+
+            })
+            .catch(error => console.log('error', error));
+    }
+
     setPeerAvatarImgName('myVideoAvatarImage', myPeerName);
     setPeerChatAvatarImgName('right', myPeerName);
     joinToChannel();
@@ -981,10 +1001,35 @@ async function handlePeersConnectionStatus(peer_id) {
         });
         // vbağlantı kontrolü
         getPeer();
-        if(typeof data.data.name !== 'undefined'){
-            myVideoParagraph.innerHTML = `${data.data.name} adlı temsilci`;
+        // if(typeof data.data.name !== 'undefined'){
+        //     myVideoParagraph.innerHTML = `${data.data.name} adlı temsilci`;
+
+        // }
+        var requestOptionsx = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+        let lastData = "";
+        try {
+            fetch("https://data-storage-server.herokuapp.com/get-info-preview", requestOptionsx)
+                .then(response => response.text())
+                .then(result => {
+                    lastData = result.data;
+                })
+                .then(res => {
+                    console.log("data", lastData);
+                })
+                .catch(error => console.log('error', error));
+            if (typeof data.data.name !== 'undefined') {
+                myVideoParagraph.innerHTML = `${lastData.data.name} adlı temsilci`;
+            }
+            myVideoParagraph.innerHTML = `Temsilci`;
+        } catch (error) {
+            console.log(error);
+            myVideoParagraph.innerHTML = `${data.data.name}`;
 
         }
+
 
     };
 }
