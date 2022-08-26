@@ -112,14 +112,14 @@ var requestOptions = {
 fetch("https://yedas-agent.herokuapp.com/api/customers/" + tcInfo, requestOptions)
     .then(response => response.json())
     .then(result => {
-        if(myPeerName){
+        if (myPeerName) {
             console.log(result)
             myPeerName = "AD : " + result.fullName + " TC : " + result.tcKimlik + " ARAMA NEDENİ : " + result.typeInfo;
         }
         else {
             myPeerName = "AD : " + result.fullName + " TC : " + result.tcKimlik + " ARAMA NEDENİ : " + result.typeInfo;
         }
-        
+
     })
     .catch(error => console.log('error', error));
 
@@ -779,12 +779,12 @@ async function clientConnet() {
     console.log('11. Bilgi doğrulaması');
     if (true) {
         checkPeerAudioVideo();
-        
+
         whoAreYouJoin();
         getPeer();
 
         playSound('addPeer');
-       
+
         return;
     }
 }
@@ -814,12 +814,12 @@ function checkPeerAudioVideo() {
  */
 var data;
 fetch("https://data-storage-server.herokuapp.com/get-info-preview", requestOptions)
-        .then(response => response.text())
-        .then(result => {
-            data = JSON.parse(result);
-            console.log(data)
-        })
-        .catch(error => console.log('error', error));
+    .then(response => response.text())
+    .then(result => {
+        data = JSON.parse(result);
+        console.log(data)
+    })
+    .catch(error => console.log('error', error));
 const getPeer = () => {
     var requestOptions = {
         method: 'GET',
@@ -838,13 +838,18 @@ const getPeer = () => {
 
 
 function whoAreYouJoin() {
-    
+
     myVideoWrap.style.display = 'inline';
-    myVideoParagraph.innerHTML = `${data.data.name} adlı temsilci`;
+    // data dan gelen bilgileri yazma
+    if (typeof data.data.name !== 'undefined') {
+        myVideoParagraph.innerHTML = `${data.data.name} adlı temsilci`;
+
+    }
     setPeerAvatarImgName('myVideoAvatarImage', myPeerName);
     setPeerChatAvatarImgName('right', myPeerName);
     joinToChannel();
     setTheme(theme);
+    getPeer();
 }
 
 /**
@@ -974,6 +979,10 @@ async function handlePeersConnectionStatus(peer_id) {
             connectionStatus: connectionStatus,
             signalingState: signalingState,
         });
+        // vbağlantı kontrolü
+        getPeer();
+        myVideoParagraph.innerHTML = `${data.data.name} adlı temsilci`;
+
     };
 }
 
