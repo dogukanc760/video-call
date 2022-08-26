@@ -115,14 +115,19 @@ let dalData;
 fetch("https://yedas-agent.herokuapp.com/api/customers/" + tcInfo, requestOptions)
     .then(response => response.json())
     .then(result => {
-        if (typeof myPeerName !== 'undefined') {
-            console.log(result+'asdf')
+        console.log("asdfasd", result)
+        if (typeof result.fullName !== 'undefined') {
             myPeerName = "AD : " + result.fullName + " TC : " + result.tcKimlik + " ARAMA NEDENİ : " + result.typeInfo;
+
         }
         else {
-            myPeerName = "AD : " + result.fullName + " TC : " + result.tcKimlik + " ARAMA NEDENİ : " + result.typeInfo;
-        }
+            myPeerName = "";
 
+        }
+    })
+    .catch(error => {
+        myPeerName = "";
+        console.log('error', error)
     })
     .catch(error => console.log('error', error));
 let isScreenEnabled = getScreenEnabled();
